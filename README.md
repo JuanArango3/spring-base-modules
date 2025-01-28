@@ -17,9 +17,24 @@ Spring Base Modules is a Java library that provides a set of base modules for bu
 - **OpenAPI Documentation**: Integrates SpringDoc OpenAPI for API documentation.
 - **JAXB Support**: Provides JAXB API for XML binding.
 
-## Build and Installation
-This project uses Maven as its build tool. To build the project, run the following command:
+## Usage
+To use this library, add the following dependency to your project:
 
-```sh
-mvn clean install
+```xml
+<dependency>
+    <groupId>me.jmarango</groupId>
+    <artifactId>spring-base-modules</artifactId>
+    <version>0.0.4-SNAPSHOT</version>
+</dependency>
+```
+
+Additionally, add the GitHub Maven repository to your project:
+
+```xml
+<repositories>
+    <repository>
+        <id>github</id>
+        <url>https://maven.pkg.github.com/JuanArango3/spring-base-modules</url>
+    </repository>
+</repositories>
 ```
