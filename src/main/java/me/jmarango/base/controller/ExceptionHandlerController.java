@@ -3,6 +3,7 @@ package me.jmarango.base.controller;
 import me.jmarango.base.dto.response.ErrorResponse;
 import me.jmarango.base.exception.NotFoundException;
 import me.jmarango.base.exception.UserWithUsernameAlreadyExistsException;
+import me.jmarango.base.exception.code.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,6 +32,12 @@ public class ExceptionHandlerController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ErrorResponse handleValidationException(IllegalArgumentException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ErrorResponse handleValidationException(BadRequestException ex) {
         return new ErrorResponse(ex.getMessage());
     }
 
