@@ -16,7 +16,7 @@ import java.security.Principal;
 @SuppressWarnings("unused")
 @Aspect
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(Ordered.HIGHEST_PRECEDENCE + 1)
 public class RequireAuthAspect {
 
     // Pointcut for methods annotated with @RequireAuth

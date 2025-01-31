@@ -12,9 +12,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ExceptionHandlerController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({MethodArgumentNotValidException.class, IllegalArgumentException.class})
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public BasicResponse handleValidationException(MethodArgumentNotValidException ex) {
         return new BasicResponse(false, String.join(", ", ex.getBindingResult().getFieldErrors().stream().map(FieldError::getField).toList()));
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public BasicResponse handleValidationException(IllegalArgumentException ex) {
+        return new BasicResponse(false, ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

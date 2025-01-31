@@ -24,6 +24,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @RequiredArgsConstructor
 @ComponentScan("me.jmarango.security")
+@ComponentScan("me.jmarango.base.controller")
 @EnableWebSecurity
 public class ApplicationSecurity {
     private final JwtFilter jwtFilter;

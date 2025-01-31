@@ -10,7 +10,7 @@
     </parent>
     <groupId>me.jmarango</groupId>
     <artifactId>spring-base-modules</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.5-SNAPSHOT</version>
     <name>Spring Base Modules</name>
     <description>Spring Base Modules</description>
     <url/>
@@ -162,13 +162,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/JuanArango3/spring-base-modules</url>
-        </repository>
-    </distributionManagement>
 
 </project>
