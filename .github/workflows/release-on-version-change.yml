@@ -12,9 +12,10 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Install xmllint
+        run: sudo apt-get install -y libxml2-utils
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Extract version from pom.xml
         id: get_version
         run: echo "VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-name()="version"]/text()' pom.xml)" >> $GITHUB_ENV
