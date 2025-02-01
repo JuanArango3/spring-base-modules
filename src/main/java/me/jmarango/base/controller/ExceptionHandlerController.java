@@ -1,5 +1,6 @@
 package me.jmarango.base.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import me.jmarango.base.dto.response.ErrorResponse;
 import me.jmarango.base.exception.NotFoundException;
 import me.jmarango.base.exception.UserWithUsernameAlreadyExistsException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
+@Hidden
 @RestControllerAdvice
 public class ExceptionHandlerController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
