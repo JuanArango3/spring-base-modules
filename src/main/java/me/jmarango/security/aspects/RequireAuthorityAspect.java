@@ -2,6 +2,7 @@ package me.jmarango.security.aspects;
 
 
 import lombok.RequiredArgsConstructor;
+import me.jmarango.base.exception.code.ForbiddenException;
 import me.jmarango.security.annotations.RequireAuthority;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -60,7 +61,7 @@ public class RequireAuthorityAspect {
         String requiredAuthority = annotation.value();
 
         if (!hasRequiredAuthority(requiredAuthority)) {
-            throw new InsufficientAuthenticationException("Insufficient permissions to access this method");
+            throw new ForbiddenException("Insufficient permissions to access this method");
         }
 
 

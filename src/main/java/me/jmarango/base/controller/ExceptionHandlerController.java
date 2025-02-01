@@ -5,6 +5,7 @@ import me.jmarango.base.dto.response.ErrorResponse;
 import me.jmarango.base.exception.NotFoundException;
 import me.jmarango.base.exception.UserWithUsernameAlreadyExistsException;
 import me.jmarango.base.exception.code.BadRequestException;
+import me.jmarango.base.exception.code.ForbiddenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -46,6 +47,12 @@ public class ExceptionHandlerController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({NotFoundException.class})
     public ErrorResponse handleEntityNotFoundException(NotFoundException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(BadRequestException.class)
+    public ErrorResponse handleForbiddenException(ForbiddenException ex) {
         return new ErrorResponse(ex.getMessage());
     }
 
