@@ -51,7 +51,7 @@ public class ExceptionHandlerController {
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler(BadRequestException.class)
+    @ExceptionHandler(ForbiddenException.class)
     public ErrorResponse handleForbiddenException(ForbiddenException ex) {
         return new ErrorResponse(ex.getMessage());
     }
