@@ -46,6 +46,16 @@ public class JwtUtils {
         }
     }
 
+
+    /**
+     * <p><b>Warning: </b> This method does not verify the sign!</p>
+     * @param token jwt token
+     * @return Claims object from the token
+     */
+    public Claims getClaimsFromToken(String token) {
+        return Jwts.parser().parseClaimsJws(token).getBody();
+    }
+
     public Long getIdFromClaims(Claims claims) {
         return claims.get("userId", Long.class);
     }
