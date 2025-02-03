@@ -60,7 +60,7 @@ public class JwtFilter extends OncePerRequestFilter {
         return !ObjectUtils.isEmpty(header) && header.startsWith("Bearer");
     }
 
-    private String getAccessToken(HttpServletRequest request) {
+    public String getAccessToken(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         try {
             return header.split(" ")[1].trim();
