@@ -1,6 +1,7 @@
 package me.jmarango.security.filters;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,15 +33,17 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = getAccessToken(request);
+        String token = jwtUtils.getAccessToken(request);
 
-        Claims claims = jwtUtils.validateAccessToken(token);
-        if (claims == null) {
+        Claims claims;
+        try {
+            claims = jwtUtils.validateAccessToken(token);
+        } catch (JwtException | IllegalArgumentException e) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        AbstractUser abstractUser = new AbstractUser(jwtUtils.getIdFromClaims(claims), claims.getSubject(), "") {
+        AbstractUser abstractUser = new AbstractUser(jwtUtils.getIdFromClaims(claims), claims.getSubject(), null) {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
                 return jwtUtils.getAuthoritiesFromClaims(claims);
@@ -58,14 +61,5 @@ public class JwtFilter extends OncePerRequestFilter {
     private boolean hasAuthorizationBearer(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         return !ObjectUtils.isEmpty(header) && header.startsWith("Bearer");
-    }
-
-    public String getAccessToken(HttpServletRequest request) {
-        String header = request.getHeader("Authorization");
-        try {
-            return header.split(" ")[1].trim();
-        } catch (IndexOutOfBoundsException ex) {
-            return "";
-        }
     }
 }

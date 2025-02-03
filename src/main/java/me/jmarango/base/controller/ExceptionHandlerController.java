@@ -6,6 +6,7 @@ import me.jmarango.base.exception.NotFoundException;
 import me.jmarango.base.exception.UserWithUsernameAlreadyExistsException;
 import me.jmarango.base.exception.code.BadRequestException;
 import me.jmarango.base.exception.code.ForbiddenException;
+import me.jmarango.base.exception.code.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -53,6 +54,12 @@ public class ExceptionHandlerController {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(ForbiddenException.class)
     public ErrorResponse handleForbiddenException(ForbiddenException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(UnauthorizedException.class)
+    public ErrorResponse handleUnauthorizedException(UnauthorizedException ex) {
         return new ErrorResponse(ex.getMessage());
     }
 

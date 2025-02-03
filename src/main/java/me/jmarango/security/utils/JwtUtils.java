@@ -1,6 +1,7 @@
 package me.jmarango.security.utils;
 
 import io.jsonwebtoken.*;
+import jakarta.servlet.http.HttpServletRequest;
 import me.jmarango.base.model.AbstractUser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,13 +38,8 @@ public class JwtUtils {
                 .compact();
     }
 
-    public Claims validateAccessToken(String token) throws ExpiredJwtException {
-        try {
-            return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-        } catch (JwtException ex) {
-            if (ex instanceof ExpiredJwtException) throw ex;
-            return null;
-        }
+    public Claims validateAccessToken(String token) throws JwtException, IllegalArgumentException {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
 
@@ -65,5 +61,14 @@ public class JwtUtils {
         List<String> authorities = (List<String>)claims.get("authorities", List.class);
 
         return authorities.stream().map(authority -> (GrantedAuthority) new SimpleGrantedAuthority(authority)).toList();
+    }
+
+    public String getAccessToken(HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        try {
+            return header.split(" ")[1].trim();
+        } catch (IndexOutOfBoundsException ex) {
+            return "";
+        }
     }
 }
