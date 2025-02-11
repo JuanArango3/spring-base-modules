@@ -6,13 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.AbstractPersistable;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @MappedSuperclass
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class AbstractUser extends AbstractPersistable<Long> implements UserDetails {
+public abstract class AbstractUser extends AbstractPersistable<Long> {
 
     @Column(nullable = false, unique = true, length = 20)
     private String username;

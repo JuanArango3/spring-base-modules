@@ -7,11 +7,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import me.jmarango.base.model.AbstractUser;
+import me.jmarango.security.dto.EnderUserDetails;
 import me.jmarango.security.utils.JwtUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.time.ZoneId;
 
 @Component
 @RequiredArgsConstructor
@@ -43,12 +42,12 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        AbstractUser abstractUser = new AbstractUser(jwtUtils.getIdFromClaims(claims), claims.getSubject(), null) {
-            @Override
-            public Collection<? extends GrantedAuthority> getAuthorities() {
-                return jwtUtils.getAuthoritiesFromClaims(claims);
-            }
-        };
+        EnderUserDetails abstractUser = new EnderUserDetails(
+                jwtUtils.getIdFromClaims(claims),
+                claims.getSubject(),
+                null,
+                claims.getIssuedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(),
+                jwtUtils.getAuthoritiesFromClaims(claims));
 
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(abstractUser, null, abstractUser.getAuthorities());
 

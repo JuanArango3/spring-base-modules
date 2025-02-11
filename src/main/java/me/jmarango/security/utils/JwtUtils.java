@@ -1,8 +1,11 @@
 package me.jmarango.security.utils;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
-import me.jmarango.base.model.AbstractUser;
+import me.jmarango.security.dto.EnderUserDetails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,11 +25,11 @@ public class JwtUtils {
 
     private final long DEV_DURATION = 30 * 1000;
 
-    public String generateToken(AbstractUser abstractUser) {
-        return generateToken(abstractUser, false);
+    public String generateToken(EnderUserDetails user) {
+        return generateToken(user, false);
     }
 
-    public String generateToken(AbstractUser abstractUser, boolean devToken) {
+    public String generateToken(EnderUserDetails abstractUser, boolean devToken) {
         List<String> authorities = abstractUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         return Jwts.builder()
                 .setSubject(abstractUser.getUsername())
@@ -40,16 +43,6 @@ public class JwtUtils {
 
     public Claims validateAccessToken(String token) throws JwtException, IllegalArgumentException {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-    }
-
-
-    /**
-     * <p><b>Warning: </b> This method does not verify the sign!</p>
-     * @param token jwt token
-     * @return Claims object from the token
-     */
-    public Claims getClaimsFromToken(String token) {
-        return Jwts.parser().parseClaimsJws(token).getBody();
     }
 
     public Long getIdFromClaims(Claims claims) {
