@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Collection;
 
 @Data
@@ -18,7 +18,7 @@ public class EnderUserDetails implements UserDetails {
 
     private final String password;
 
-    private final LocalDateTime tokenIssuedAt;
+    private final Instant tokenIssuedAt;
 
     private final Collection<? extends GrantedAuthority> authorities;
 }

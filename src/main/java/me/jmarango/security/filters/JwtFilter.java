@@ -18,7 +18,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.time.ZoneId;
 
 @Component
 @RequiredArgsConstructor
@@ -46,7 +45,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 jwtUtils.getIdFromClaims(claims),
                 claims.getSubject(),
                 null,
-                claims.getIssuedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(),
+                claims.getIssuedAt().toInstant(),
                 jwtUtils.getAuthoritiesFromClaims(claims));
 
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(abstractUser, null, abstractUser.getAuthorities());
