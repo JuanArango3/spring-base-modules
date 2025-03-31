@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @ApiResponses(
-        @ApiResponse(responseCode = "403", description = "Se intenta acceder a un recurso protegido por permisos (y no los tiene xd)", content = @Content(schema = @Schema(implementation = BasicResponse.class)))
+        @ApiResponse(responseCode = "403", description = "Se intenta acceder a un recurso protegido por permisos y no los tiene", content = @Content(schema = @Schema(implementation = BasicResponse.class)))
 )
 public @interface InsufficientPermission {
 }
