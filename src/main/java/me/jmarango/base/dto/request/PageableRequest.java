@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
 import java.util.List;
@@ -23,15 +25,22 @@ public class PageableRequest {
     @Max(1000)
     private int size=20;
 
-    private List<Sort> sort;
+    private List<EnderSort> sort;
 
     @Data
     @AllArgsConstructor
-    public static class Sort {
+    public static class EnderSort {
         @Schema(description = "Campo por el cual ordenar")
         private String field;
 
         @Schema(defaultValue = "ASC", description = "Dirección de ordenamiento: ASC o DESC")
         private Direction direction;
+    }
+
+    public PageRequest toPageRequest() {
+        return PageRequest.of(page, size, Sort.by(sort.parallelStream().map(esort -> new Sort.Order(
+                esort.getDirection() != null ? esort.getDirection() : Direction.ASC,
+                esort.getField()
+        )).toList()));
     }
 }
