@@ -38,6 +38,9 @@ public class PageableRequest {
     }
 
     public PageRequest toPageRequest() {
+        if (sort == null || sort.isEmpty()) {
+            return PageRequest.of(page, size);
+        }
         return PageRequest.of(page, size, Sort.by(sort.parallelStream().map(esort -> new Sort.Order(
                 esort.getDirection() != null ? esort.getDirection() : Direction.ASC,
                 esort.getField()
