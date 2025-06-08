@@ -10,7 +10,7 @@
     </parent>
     <groupId>me.jmarango</groupId>
     <artifactId>spring-base-modules</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <name>Spring Base Modules</name>
     <description>Spring Base Modules</description>
     <url/>

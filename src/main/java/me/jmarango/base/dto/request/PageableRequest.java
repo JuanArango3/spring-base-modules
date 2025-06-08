@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Sort.Direction;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,4 +22,16 @@ public class PageableRequest {
     @Min(1)
     @Max(1000)
     private int size=20;
+
+    private List<Sort> sort;
+
+    @Data
+    @AllArgsConstructor
+    public static class Sort {
+        @Schema(description = "Campo por el cual ordenar")
+        private String field;
+
+        @Schema(defaultValue = "ASC", description = "Dirección de ordenamiento: ASC o DESC")
+        private Direction direction;
+    }
 }
