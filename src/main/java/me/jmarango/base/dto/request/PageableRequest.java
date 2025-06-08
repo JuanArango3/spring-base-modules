@@ -23,11 +23,13 @@ import java.util.List;
 public class PageableRequest {
     @Schema(defaultValue = "0", description = "Página actual")
     @Min(0)
+    @Builder.Default
     private int page=0;
 
     @Schema(defaultValue = "20", description = "Tamaño de la página")
     @Min(1)
     @Max(1000)
+    @Builder.Default
     private int size=20;
 
     private List<SortDTO> sort;
