@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -36,6 +37,11 @@ public class PageableRequest {
     @Schema(description = "Ordenamiento de los resultados. Formato: 'campo,direccion'. Ejemplo: 'nombre,asc' o 'fecha,desc'.")
     private List<String> sort;
 
+    /**
+     * Convierte los parámetros de paginación y ordenamiento a un PageRequest de Spring Data.
+     *
+     * @return PageRequest construido a partir de los parámetros de paginación y ordenamiento.
+     */
     public PageRequest toPageRequest() {
         if (sort == null || sort.isEmpty()) {
             return PageRequest.of(page, size);
@@ -51,5 +57,25 @@ public class PageableRequest {
                 throw new BadRequestException("Invalid sort format: " + s);
             }
         }).toList()));
+    }
+
+    /**
+     * Valida los campos de ordenamiento permitidos y construye un PageRequest.
+     *
+     * @param allowedSortFields Conjunto de campos de ordenamiento permitidos.
+     * @return PageRequest construido a partir de los parámetros de paginación y ordenamiento.
+     * @throws BadRequestException Si algún campo de ordenamiento no está permitido.
+     */
+    public PageRequest validateAndBuild(final Set<String> allowedSortFields) {
+        if (sort != null && !sort.isEmpty()) {
+            List<String> invalidSortFields = sort.parallelStream()
+                    .map(s -> s.split(",")[0].trim())
+                    .filter(field -> !allowedSortFields.contains(field))
+                    .toList();
+            if (!invalidSortFields.isEmpty()) {
+                throw new BadRequestException("Invalid sort fields: " + String.join(", ", invalidSortFields));
+            }
+        }
+        return toPageRequest();
     }
 }
