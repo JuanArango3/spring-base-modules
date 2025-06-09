@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import me.jmarango.base.exception.code.BadRequestException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
@@ -32,12 +33,23 @@ public class PageableRequest {
     @Builder.Default
     private int size=20;
 
-    private List<SortDTO> sort;
+    @Schema(description = "Ordenamiento de los resultados. Formato: 'campo,direccion'. Ejemplo: 'nombre,asc' o 'fecha,desc'.")
+    private List<String> sort;
 
     public PageRequest toPageRequest() {
         if (sort == null || sort.isEmpty()) {
             return PageRequest.of(page, size);
         }
-        return PageRequest.of(page, size, Sort.by(sort.stream().map(SortDTO::toSortOrder).toList()));
+        return PageRequest.of(page, size, Sort.by(sort.stream().map(s -> {
+            String[] parts = s.split(",");
+            String property = parts[0].trim();
+            if (parts.length == 1) {
+                return new Sort.Order(Sort.Direction.ASC, property);
+            } else if (parts.length == 2) {
+                return new Sort.Order(Sort.Direction.fromString(parts[1]), property);
+            } else {
+                throw new BadRequestException("Invalid sort format: " + s);
+            }
+        }).toList()));
     }
 }
